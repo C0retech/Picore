@@ -206,6 +206,33 @@
   </style>
 </head>
 <body>
+   <!-- 👇 Navbar läggs här (INNE i body, högst upp) -->
+  <header class="bg-white shadow-md fixed top-0 left-0 w-full z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-bold text-gray-800">😎 Stoffe Quotes</a>
+      <nav class="hidden md:flex space-x-6">
+        <a href="quotes.html" class="text-gray-600 hover:text-blue-600 font-medium">Citat</a>
+        <a href="roasts.html" class="text-gray-600 hover:text-red-600 font-medium">Roasts</a>
+        <a href="support.html" class="text-gray-600 hover:text-yellow-600 font-medium">Support</a>
+      </nav>
+      <button id="menuBtn" class="md:hidden text-gray-600 hover:text-gray-800 focus:outline-none">☰</button>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-gray-50 shadow-inner">
+      <nav class="flex flex-col p-4 space-y-2">
+        <a href="quotes.html" class="text-gray-600 hover:text-blue-600 font-medium">Citat</a>
+        <a href="roasts.html" class="text-gray-600 hover:text-red-600 font-medium">Roasts</a>
+        <a href="support.html" class="text-gray-600 hover:text-yellow-600 font-medium">Support</a>
+      </nav>
+    </div>
+  </header>
+  <!-- ☝️ Navbar klar -->
+
+  <!-- 👇 Sidoinnehåll -->
+  <main class="pt-24 max-w-3xl mx-auto p-4">
+    <h1 class="text-3xl font-bold mb-6">Välkommen till picore Quotes! 😍</h1>
+    <p class="text-lg text-gray-700">Här kommer citat, roasts och annat kul.</p>
+  </main>
+  <!-- radbryt -->
   <div class="card" role="application" aria-label="Roast och Citat hub">
     <header>
       <div class="logo" aria-hidden="false">
@@ -269,13 +296,20 @@
           <div class="hint" style="margin-top:6px">Lokal tillägg — syns bara i din browser. För publik: använd GitHub Issues.</div>
         </div>
       </aside>
-    </div>
+</div>
+<footer>
+  <div>© 2025 picore.se – alla rättigheter reserverade</div>
+  <div>Vill du att jag lägger upp ett repo för inskick? <a class="link" href="#">Säg till</a></div>
 
-    <footer>
-      <div>Made with ☕ & sarkasm — Stoffe style.</div>
-      <div>Vill du att jag lägger upp ett repo för inskick? <a class="link" href="#">Säg till</a></div>
-    </footer>
+  <!-- Din Buy Me a Coffee-knapp -->
+  <div style="margin-top: 12px;">
+    <a href="https://www.buymeacoffee.com/dittnamn" target="_blank"
+       class="px-6 py-3 rounded-2xl bg-yellow-400 hover:bg-yellow-500 text-black font-bold shadow-md transition transform hover:scale-105 inline-block">
+      ☕ Buy Me a Coffee
+    </a>
   </div>
+</footer>
+</div>
 
 <script>
 /* ========= DATA ========= */
@@ -459,7 +493,7 @@ document.addEventListener('keydown', (e)=>{
 renderFavs();
 updateModeUI();
 setTimeout(()=>{ setDisplay("Klar! Tryck 'Ge mig smisk' eller tryck 'Space' för överraskning.", 'quote'); }, 400);
-
+  
 </script>
 </body>
 </html>
