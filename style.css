@@ -29,11 +29,12 @@ html,body {
   top:0;
   left:0;
   width:100%;
-  background:linear-gradient(90deg,rgba(255,64,129,0.02),rgba(0,209,255,0.01));
   display:flex;
   justify-content:center;
   align-items:center;
   z-index:1000;
+  background:linear-gradient(90deg,rgba(255,64,129,0.02),rgba(0,209,255,0.01));
+  backdrop-filter: blur(10px); /* suddar bakgrund som ligger under */
   box-shadow:0 4px 12px rgba(0,0,0,0.3);
 }
 .navbar-inner{
