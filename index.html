@@ -2,128 +2,152 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Picore Dashboard</title>
+  <title>Interactive Knowledge Map Editor</title>
+  <script src="https://unpkg.com/cytoscape@3.25.2/dist/cytoscape.min.js"></script>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: #f1f5f9;
+    body { margin:0; font-family: Arial, sans-serif; background:#1e1e2f; color:white; }
+    #cy { width: 100%; height: 80vh; display:block; border-bottom: 2px solid #444; }
+    .controls {
+      padding: 10px;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+      gap: 20px;
+      flex-wrap: wrap;
+      background:#2a2a3d;
     }
-    header {
-      text-align: center;
-      margin: 40px 0 20px;
+    .controls input, .controls select, .controls button {
+      padding: 5px;
+      border-radius:5px;
+      border:none;
+      font-size: 14px;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 10px;
-    }
-    .clock {
-      font-size: 1.6rem;
-      color: #38bdf8;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 25px;
-      width: 90%;
-      max-width: 1000px;
-      margin-top: 20px;
-    }
-    .card {
-      background: #1e293b;
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.5);
-    }
-    .card a {
-      color: #38bdf8;
-      text-decoration: none;
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-      font-size: 1.1rem;
-    }
-    /* Badge för "nytt" */
-    .badge {
+    .controls button { background:#ff4081; color:white; cursor:pointer; }
+    .tooltip {
       position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #ef4444;
+      background: rgba(0,0,0,0.8);
       color: white;
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 8px;
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
+      padding: 5px 10px;
+      border-radius: 5px;
+      pointer-events: none;
+      display: none;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🔥 Picore Dashboard 🔥</h1>
-    <div id="clock" class="clock"></div>
-  </header>
 
-  <div class="grid">
-    <div class="card">
-      <h2>GitHub</h2>
-      <a href="https://github.com/" target="_blank">Öppna GitHub</a>
-    </div>
-    <div class="card">
-      <h2>Cloudflare</h2>
-      <a href="https://dash.cloudflare.com/" target="_blank">Öppna Cloudflare Dashboard</a>
-    </div>
-    <div class="card">
-      <h2>Väder</h2>
-      <div id="weather">Hämtar...</div>
-    </div>
-    <div class="card">
-      <h2>Kommande Projekt 🚧</h2>
-      <div class="badge">NY!</div>
-      <p>Här dyker det upp nya länkar snart...</p>
-    </div>
-  </div>
+<div id="cy"></div>
 
-  <script>
-    // ⏰ Live-klocka
-    function updateClock() {
-      const now = new Date();
-      document.getElementById('clock').innerText =
-        now.toLocaleDateString('sv-SE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
-        " • " +
-        now.toLocaleTimeString('sv-SE');
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+<div class="controls">
+  <!-- Lägg till nod -->
+  <input id="nodeLabel" placeholder="Nod namn">
+  <input id="nodeInfo" placeholder="Info om noden">
+  <button id="addNodeBtn">Add Node</button>
 
-    // 🌤️ Väder (Open-Meteo API)
-    fetch("https://api.open-meteo.com/v1/forecast?latitude=59.3&longitude=18.1&current=temperature_2m")
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('weather').innerText =
-          data.current.temperature_2m + "°C";
-      })
-      .catch(() => {
-        document.getElementById('weather').innerText = "Ingen data";
-      });
-  </script>
+  <!-- Lägg till edge -->
+  <select id="edgeSource"><option value="">Source</option></select>
+  <select id="edgeTarget"><option value="">Target</option></select>
+  <button id="addEdgeBtn">Add Edge</button>
+</div>
+
+<div id="tooltip" class="tooltip"></div>
+
+<script>
+  // Ladda graf från localStorage om den finns
+  let savedGraph = JSON.parse(localStorage.getItem('graph')) || { nodes: [], edges: [] };
+
+  const cy = cytoscape({
+    container: document.getElementById('cy'),
+    elements: savedGraph,
+    style: [
+      {
+        selector: 'node',
+        style: {
+          'label': 'data(label)',
+          'text-valign': 'center',
+          'text-halign': 'center',
+          'background-color': '#ff4081',
+          'color': 'white',
+          'font-size': '14px',
+          'width': '60px',
+          'height': '60px'
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 3,
+          'line-color': '#00bcd4',
+          'target-arrow-color': '#00bcd4',
+          'target-arrow-shape': 'triangle',
+          'curve-style': 'bezier'
+        }
+      }
+    ],
+    layout: { name: 'cose', animate: true }
+  });
+
+  const tooltip = document.getElementById('tooltip');
+
+  // Tooltip
+  cy.on('mouseover', 'node', function(evt){
+    const node = evt.target;
+    tooltip.style.display = 'block';
+    tooltip.innerText = node.data('info');
+  });
+  cy.on('mousemove', function(evt){
+    tooltip.style.left = (evt.originalEvent.clientX + 10) + 'px';
+    tooltip.style.top = (evt.originalEvent.clientY + 10) + 'px';
+  });
+  cy.on('mouseout', 'node', function(){
+    tooltip.style.display = 'none';
+  });
+
+  // Hjälpfunktion för att uppdatera dropdowns
+  function updateEdgeDropdowns() {
+    const source = document.getElementById('edgeSource');
+    const target = document.getElementById('edgeTarget');
+    source.innerHTML = '<option value="">Source</option>';
+    target.innerHTML = '<option value="">Target</option>';
+    cy.nodes().forEach(node => {
+      const option = `<option value="${node.id()}">${node.data('label')}</option>`;
+      source.innerHTML += option;
+      target.innerHTML += option;
+    });
+  }
+
+  updateEdgeDropdowns();
+
+  // Lägg till nod
+  document.getElementById('addNodeBtn').addEventListener('click', () => {
+    const label = document.getElementById('nodeLabel').value.trim();
+    const info = document.getElementById('nodeInfo').value.trim();
+    if(!label) return alert('Nod namn krävs!');
+    const id = 'node_' + Date.now();
+    cy.add({ data: { id, label, info } });
+    cy.layout({ name: 'cose', animate:true }).run();
+    updateEdgeDropdowns();
+    saveGraph();
+    document.getElementById('nodeLabel').value = '';
+    document.getElementById('nodeInfo').value = '';
+  });
+
+  // Lägg till edge
+  document.getElementById('addEdgeBtn').addEventListener('click', () => {
+    const source = document.getElementById('edgeSource').value;
+    const target = document.getElementById('edgeTarget').value;
+    if(!source || !target) return alert('Välj både source och target!');
+    cy.add({ data: { source, target } });
+    cy.layout({ name: 'cose', animate:true }).run();
+    saveGraph();
+    updateEdgeDropdowns();
+  });
+
+  // Spara graf till localStorage
+  function saveGraph() {
+    const elements = cy.json().elements;
+    localStorage.setItem('graph', JSON.stringify(elements));
+  }
+
+</script>
 </body>
 </html>
