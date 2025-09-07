@@ -2,56 +2,96 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Picore.se – Parkerad domän</title>
+  <title>Picore Dashboard</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #fff;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+    }
+    header {
       text-align: center;
+      margin: 20px;
     }
-    h1 {
-      font-size: 3rem;
-      margin: 0.5em 0;
+    .clock {
+      font-size: 2rem;
+      margin-top: 5px;
     }
-    p {
-      font-size: 1.2rem;
-      max-width: 500px;
-      margin: 0 auto 1.5em;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      width: 90%;
+      max-width: 1000px;
+      margin-top: 20px;
     }
     .card {
-      background: rgba(255,255,255,0.1);
-      padding: 2em;
+      background: #1e293b;
       border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-      backdrop-filter: blur(5px);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    footer {
-      position: absolute;
-      bottom: 10px;
-      font-size: 0.9rem;
-      opacity: 0.7;
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+    .card a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>🚧 Picore.se</h1>
-    <p>Denna domän är för tillfället parkerad.  
-       Vi jobbar på något kul bakom kulisserna ☕🚀</p>
+  <header>
+    <h1>🔥 Picore Dashboard 🔥</h1>
+    <div id="clock" class="clock"></div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <h2>GitHub</h2>
+      <a href="https://github.com/" target="_blank">Öppna GitHub</a>
+    </div>
+    <div class="card">
+      <h2>Server</h2>
+      <a href="https://picore.se" target="_blank">Öppna VPS</a>
+    </div>
+    <div class="card">
+      <h2>Väder</h2>
+      <div id="weather">Hämtar...</div>
+    </div>
   </div>
-  <footer>
-    © <span id="year"></span> Picore.se
-  </footer>
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+    // ⏰ Live-klocka
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').innerText =
+        now.toLocaleDateString('sv-SE') + ' ' + now.toLocaleTimeString('sv-SE');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 🌤️ Väder (Open-Meteo API)
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=59.3&longitude=18.1&current=temperature_2m")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('weather').innerText =
+          data.current.temperature_2m + "°C";
+      })
+      .catch(() => {
+        document.getElementById('weather').innerText = "Ingen data";
+      });
   </script>
 </body>
 </html>
