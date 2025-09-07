@@ -1,145 +1,465 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-  <meta charset="UTF-8">
-  <title>🔥 Roast & Quotes Generator 🔥</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roast & Citat Hub 😈✨</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Arial Black", sans-serif;
-      background: linear-gradient(135deg, #1e1e2f, #2a2a3d);
-      color: white;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      padding: 15px;
+    :root{
+      --bg:#0f0f18;
+      --panel:#161623;
+      --accent:#ff4081;
+      --accent2:#00d1ff;
+      --muted: #9aa0b0;
+      --glass: rgba(255,255,255,0.04);
     }
-    h1 {
-      font-size: clamp(1.6rem, 5vw, 2.8rem);
-      margin-bottom: 20px;
-      color: #ff4081;
-      text-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+    body{
+      background:
+        radial-gradient(900px 600px at 10% 10%, rgba(0,212,255,0.06), transparent 10%),
+        radial-gradient(800px 500px at 90% 90%, rgba(255,64,129,0.04), transparent 10%),
+        var(--bg);
+      color:#e6eef8;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      min-height:100vh;
     }
-    #quote {
-      font-size: clamp(1.2rem, 4vw, 2rem);
-      font-weight: bold;
-      margin: 20px auto;
-      max-width: 90%;
-      line-height: 1.5;
-      animation: fadeIn 0.6s ease-in-out;
-      color: #f5f5f5;
-      text-shadow: 0 0 5px #00bcd4, 0 0 10px #00acc1;
+
+    .card{
+      width:100%;
+      max-width:980px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,0,0,0.5) inset;
+      border: 1px solid rgba(255,255,255,0.03);
+      overflow:hidden;
+      backdrop-filter: blur(6px);
+      display:flex;
+      flex-direction:column;
     }
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 25px;
-      width: 100%;
+
+    header{
+      padding:14px 18px;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      background: linear-gradient(90deg, rgba(255,64,129,0.02), rgba(0,209,255,0.01));
     }
-    button {
-      flex: 1 1 auto;
-      min-width: 120px;
-      max-width: 200px;
-      padding: 12px 18px;
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
-      border: none;
-      border-radius: 12px;
-      background: #ff4081;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s ease, background 0.3s, box-shadow 0.3s;
-      box-shadow: 0 0 10px #ff4081, 0 0 20px #ff80ab;
+    .logo{
+      display:flex;
+      gap:10px;
+      align-items:center;
     }
-    button:hover {
-      background: #e73370;
-      transform: scale(1.05);
-      box-shadow: 0 0 15px #ff4081, 0 0 30px #ff80ab;
+    .logo .dot{
+      width:44px;height:44px;border-radius:10px;
+      background: linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow: 0 6px 18px rgba(255,64,129,0.18), 0 0 30px rgba(0,209,255,0.06);
+      display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;
+      transform: rotate(-10deg);
     }
-    button:active {
-      transform: scale(0.95);
+    .logo h1{margin:0;font-size:16px;letter-spacing:0.2px;}
+    .logo p{margin:0;font-size:12px;color:var(--muted);}
+
+    .top-right {
+      margin-left:auto;color:var(--muted);font-size:13px;
+      display:flex;gap:10px;align-items:center;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    .main{
+      display:grid;
+      grid-template-columns: 1fr 340px;
+      gap:18px;
+      padding:18px;
     }
+
+    .stage{
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border-radius:12px;
+      padding:18px;
+      min-height:320px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      position:relative;
+    }
+    .badge{
+      position:absolute;right:14px;top:14px;font-size:12px;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);
+      border:1px solid rgba(255,255,255,0.03);
+    }
+
+    .type-switch{
+      display:flex;gap:8px;margin-bottom:10px;
+      flex-wrap:wrap; justify-content:center;
+    }
+    .type-switch button{
+      padding:8px 12px;border-radius:999px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-weight:700;
+      font-size:14px;
+    }
+    .type-switch button.active{
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#07101a;font-weight:800;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    }
+
+    .quote{
+      text-align:center;
+      font-size: clamp(20px, 4.5vw, 30px);
+      line-height:1.18;
+      max-width:820px;
+      margin:12px 0 12px 0;
+      font-weight:700;
+      letter-spacing:0.1px;
+      transform-origin:center;
+      padding: 6px 14px;
+    }
+    .author{
+      margin-top:6px;color:var(--muted);font-size:13px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .btn{
+      padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:800;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+      font-size:14px;
+    }
+    .btn.primary{ background: linear-gradient(90deg,var(--accent),#ff8fb3); color:#07101a; }
+    .btn.ghost{ background: transparent; color: var(--accent); border:1px solid rgba(255,64,129,0.12); }
+    .btn.alt{ background: linear-gradient(90deg, #00d1ff, #00b1ff); color:#031018; }
+    .btn.surprise{ background: linear-gradient(90deg,#4b00ff,#8a2be2); color:white; }
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .panel{
+      background: rgba(255,255,255,0.02);
+      padding:12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .panel h3{margin:0 0 8px 0;font-size:14px;}
+    .favorites{display:flex;flex-direction:column;gap:8px;max-height:240px;overflow:auto;padding-right:6px;}
+    .fav-item{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);font-size:13px;}
+    .fav-item small{color:var(--muted);font-size:12px}
+
+    .submit-form input, .submit-form textarea, .submit-form select{
+      width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;margin-bottom:8px;font-size:14px;
+    }
+    .hint{font-size:12px;color:var(--muted);}
+
+    footer{padding:12px 18px;border-top:1px solid rgba(255,255,255,0.03);display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;}
+    a.link{color:var(--accent);text-decoration:none;font-weight:700;}
+
+    /* Animations */
+    .pop { animation: pop 360ms cubic-bezier(.2,.8,.2,1); }
+    @keyframes pop{
+      0%{ transform: translateY(8px) scale(.98); opacity:0}
+      60%{ transform: translateY(-6px) scale(1.02); opacity:1}
+      100%{ transform: translateY(0) scale(1);}
+    }
+
+    .shake { animation: shake 800ms cubic-bezier(.36,.07,.19,.97); }
+    @keyframes shake {
+      10%,90%{ transform: translateX(-1px); }
+      20%,80%{ transform: translateX(2px); }
+      30%,50%,70%{ transform: translateX(-4px); }
+      40%,60%{ transform: translateX(4px); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 980px) {
+      .main { grid-template-columns: 1fr 300px; gap:14px; padding:14px; }
+      .quote { font-size: clamp(18px, 5.2vw, 28px); }
+      .logo .dot { width:40px;height:40px;font-size:18px; }
+    }
+    @media (max-width: 720px) {
+      .main { grid-template-columns: 1fr; padding:14px; }
+      .side { order: 2; }
+      .stage { order: 1; min-height: 420px; padding:16px; }
+      header { padding:12px; }
+      .top-right { display:none; }
+      .badge { right:12px; top:12px; font-size:11px; padding:6px 8px; }
+      .actions { gap:8px; }
+      .btn { padding:10px; font-size:15px; min-width:120px; }
+      .favorites{max-height:180px}
+    }
+
+    @media (max-width: 420px) {
+      .card { border-radius:12px; }
+      .quote { font-size: clamp(16px, 6.5vw, 22px); padding:10px; }
+      .btn { font-size:14px; padding:10px 12px; border-radius:10px; }
+      .submit-form input { font-size:13px; padding:8px; }
+    }
+
   </style>
 </head>
 <body>
-  <h1>🔥 Roast & Quotes 🔥</h1>
-  <div id="quote">Tryck på en knapp för att få en roast eller ett citat!</div>
+  <div class="card" role="application" aria-label="Roast och Citat hub">
+    <header>
+      <div class="logo" aria-hidden="false">
+        <div class="dot">R</div>
+        <div>
+          <h1>Roast & Citat Hub</h1>
+          <p>Slumpmässiga roasts & visdom — ingen nåd, bara skratt.</p>
+        </div>
+      </div>
 
-  <div class="buttons">
-    <button onclick="showRoast()">Ge mig smisk!</button>
-    <button onclick="showQuote()">Visa livsvisdom</button>
-    <button onclick="copyText()">📋 Kopiera</button>
+      <div class="top-right">
+        <div style="font-size:13px;color:var(--muted)">Prova: <strong style="color:var(--accent)">Ge mig smisk</strong></div>
+      </div>
+    </header>
+
+    <div class="main">
+      <div class="stage">
+        <div class="badge" id="modeBadge">Mode: Roast</div>
+
+        <div class="type-switch" role="tablist" aria-label="Välj typ">
+          <button id="modeRoast" class="active" aria-pressed="true">Roast</button>
+          <button id="modeQuote">Citat</button>
+          <button id="modeDaily">Dagens Roast</button>
+        </div>
+
+        <div id="display" class="quote pop">Klicka på <strong>"Ge mig smisk"</strong> för att börja.</div>
+        <div id="author" class="author"></div>
+
+        <div class="actions" role="toolbar" aria-label="Handlingar">
+          <button class="btn primary" id="randomBtn">Ge mig smisk!</button>
+          <button class="btn alt" id="randomQuoteBtn">Visa visdom</button>
+          <button class="btn ghost" id="copyBtn">Kopiera</button>
+          <button class="btn ghost" id="saveFavBtn">Spara favorit</button>
+          <button class="btn surprise" id="surpriseBtn">Överraska mig</button>
+        </div>
+      </div>
+
+      <aside class="side" aria-label="Sidopanel">
+        <div class="panel">
+          <h3>Favoriter</h3>
+          <div id="favorites" class="favorites">
+            <div class="hint">Inga favoriter än — spara en roast eller citat!</div>
+          </div>
+          <div style="margin-top:8px" class="hint">Favoriter sparas lokalt i din webbläsare.</div>
+        </div>
+
+        <div class="panel">
+          <h3>Skicka in (via GitHub)</h3>
+          <p class="hint">Vill du skicka egna roasts eller citat? Skapa en GitHub Issue i repo:t och märk den <code>roast</code> eller <code>quote</code>. Jag godkänner manuellt.</p>
+          <p class="hint">Alternativt: kopiera din text och skicka den direkt till mig.</p>
+        </div>
+
+        <div class="panel submit-form">
+          <h3>Snabbskicka (local only)</h3>
+          <input id="quickText" placeholder="Skriv roast eller citat här..." aria-label="Snabbtext">
+          <select id="quickType" aria-label="Typ">
+            <option value="roast">Roast</option>
+            <option value="quote">Citat</option>
+          </select>
+          <button class="btn primary" id="quickAddBtn" style="width:100%;margin-top:8px">Lägg till (lokalt)</button>
+          <div class="hint" style="margin-top:6px">Lokal tillägg — syns bara i din browser. För publik: använd GitHub Issues.</div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div>Made with ☕ & sarkasm — Stoffe style.</div>
+      <div>Vill du att jag lägger upp ett repo för inskick? <a class="link" href="#">Säg till</a></div>
+    </footer>
   </div>
 
-  <script>
-    const roasts = [
-      "Du har samma karisma som en blöt disktrasa.",
-      "Om hjärnor var dynamit hade du inte sprängt upp en ärta.",
-      "Du är beviset på att CTRL+C också kan skapa fel.",
-      "Din WiFi-signal är starkare än din personlighet.",
-      "Du är som en molntjänst – alltid nere när man behöver dig."
-      "Du är som en molnserver – dyr, långsam och oftast offline."
-      "Du har så lite edge att till och med Internet Explorer var snabbare än dig."
-      "Din personlighet laddar lika långsamt som ett 90-talsmodem."
-      "Om du var kod hade du varit while(true) {} – meningslös och fast."
-      "Din hjärna är som RAM – allt försvinner när det blir lite varmt."
-      "Du är som en WiFi-signal i källaren: svag, opålitlig och ingen märker när du försvinner."
-      "Du har samma precision som en IKEA-möbel utan manual."
-      "Om dumhet var bandbredd hade du varit 10 Gbit/s."
-      "Du är som ett obevakat kylskåp på jobbet – ingen gillar dig men alla pratar om dig."
-      "Din IQ är som batteriet i en gammal iPhone – dör när det blir jobbigt."
-    ];
-    const quotes = [
-      "“Kaffe först. Allt annat sen.”",
-      "“Sarkasm: mitt andra modersmål.”",
-      "“Kod utan buggar är som enhörningar – mytiskt.”",
-      "“Skratta åt problemen, det förvirrar dem.”",
-      "“Alla genvägar leder till fler buggar.”"
-      "“Kaffe är inte en dryck, det är en livsstil.”"
-      "“Ctrl+S är min religion.”"
-      "“Livet är som en kodbas – fullt av buggar men ändå körbart.”"
-      "“Sarkasm är gratis terapi.”"
-      "“Alla dagar blir bättre med en extra shot espresso.”"
-      "“Kaos är bara ordning som inte kompilerat än.”"
-      "“När livet kraschar – starta om och testa igen.”"
-      "“Skratta åt dina problem, de hatar det.”"
-      "“Kreativitet är intelligens som tar en kafferast.”"
-      "“Rädsla är bara en 404: du hittar snart rätt sida igen.”"
-    ];
+<script>
+/* ========= DATA ========= */
+const ROASTS = [
+  "Du är som en molnserver – dyr, långsam och oftast offline.",
+  "Du har så lite edge att till och med Internet Explorer var snabbare än dig.",
+  "Din personlighet laddar lika långsamt som ett 90-talsmodem.",
+  "Om du var kod hade du varit while(true) {} – meningslös och fast.",
+  "Din hjärna är som RAM – allt försvinner när det blir lite varmt.",
+  "Du är som en WiFi-signal i källaren: svag, opålitlig och ingen märker när du försvinner.",
+  "Du har samma precision som en IKEA-möbel utan manual.",
+  "Om dumhet var bandbredd hade du varit 10 Gbit/s.",
+  "Du är som ett obevakat kylskåp på jobbet – ingen gillar dig men alla pratar om dig.",
+  "Din IQ är som batteriet i en gammal iPhone – dör när det blir jobbigt."
+];
 
-    function randomItem(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
+const QUOTES = [
+  "Kaffe är inte en dryck, det är en livsstil.",
+  "Ctrl+S är min religion.",
+  "Livet är som en kodbas – fullt av buggar men ändå körbart.",
+  "Sarkasm är gratis terapi.",
+  "Alla dagar blir bättre med en extra shot espresso.",
+  "Kaos är bara ordning som inte kompilerat än.",
+  "När livet kraschar – starta om och testa igen.",
+  "Skratta åt dina problem, de hatar det.",
+  "Kreativitet är intelligens som tar en kafferast.",
+  "Rädsla är bara en 404: du hittar snart rätt sida igen."
+];
 
-    function showRoast() {
-      const el = document.getElementById('quote');
-      el.innerText = randomItem(roasts);
-      el.style.animation = "none";
-      void el.offsetWidth; // reset animation
-      el.style.animation = "fadeIn 0.6s ease-in-out";
-    }
+/* ========= Utils ========= */
+function chooseRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function hashStr(s){
+  let h=2166136261;
+  for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h += (h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24); }
+  return Math.abs(h);
+}
 
-    function showQuote() {
-      const el = document.getElementById('quote');
-      el.innerText = randomItem(quotes);
-      el.style.animation = "none";
-      void el.offsetWidth;
-      el.style.animation = "fadeIn 0.6s ease-in-out";
-    }
+/* ========= DOM refs ========= */
+const display = document.getElementById('display');
+const author = document.getElementById('author');
+const randomBtn = document.getElementById('randomBtn');
+const randomQuoteBtn = document.getElementById('randomQuoteBtn');
+const copyBtn = document.getElementById('copyBtn');
+const saveFavBtn = document.getElementById('saveFavBtn');
+const surpriseBtn = document.getElementById('surpriseBtn');
 
-    function copyText() {
-      const text = document.getElementById('quote').innerText;
-      navigator.clipboard.writeText(text);
-      alert("Kopierat: " + text);
-    }
-  </script>
+const modeRoastBtn = document.getElementById('modeRoast');
+const modeQuoteBtn = document.getElementById('modeQuote');
+const modeDailyBtn = document.getElementById('modeDaily');
+const modeBadge = document.getElementById('modeBadge');
+
+const favoritesEl = document.getElementById('favorites');
+
+const quickText = document.getElementById('quickText');
+const quickType = document.getElementById('quickType');
+const quickAddBtn = document.getElementById('quickAddBtn');
+
+let mode = 'roast';
+let current = { text:'', author:'' };
+
+/* ========= Favorites (localStorage) ========= */
+function loadFavs(){ try{ return JSON.parse(localStorage.getItem('fav_roasts')) || []; }catch(e){ return []; } }
+function saveFavs(arr){ localStorage.setItem('fav_roasts', JSON.stringify(arr)); }
+function renderFavs(){
+  const favs = loadFavs();
+  favoritesEl.innerHTML = '';
+  if(!favs.length){
+    favoritesEl.innerHTML = '<div class="hint">Inga favoriter än — spara en roast eller citat!</div>';
+    return;
+  }
+  favs.forEach((f, idx) => {
+    const div = document.createElement('div'); div.className='fav-item';
+    const left = document.createElement('div');
+    left.innerHTML = `<div style="font-size:14px">${f.text}</div><small>${f.type.toUpperCase()} • ${new Date(f.date).toLocaleDateString()}</small>`;
+    const right = document.createElement('div');
+    const copy = document.createElement('button'); copy.textContent='Kopiera'; copy.className='btn ghost'; copy.style.marginRight='8px';
+    copy.onclick = ()=>{ navigator.clipboard.writeText(f.text); flash(copy); };
+    const remove = document.createElement('button'); remove.textContent='Ta bort'; remove.className='btn'; remove.onclick = ()=>{
+      const arr = loadFavs(); arr.splice(idx,1); saveFavs(arr); renderFavs();
+    };
+    right.appendChild(copy); right.appendChild(remove);
+    div.appendChild(left); div.appendChild(right);
+    favoritesEl.appendChild(div);
+  });
+}
+
+/* ========= Display helpers ========= */
+function setDisplay(text, kind='roast'){
+  display.classList.remove('pop','shake');
+  void display.offsetWidth;
+  display.classList.add('pop');
+  display.textContent = text;
+  author.textContent = (kind === 'quote') ? '— Visdom' : (mode === 'daily' ? '— Dagens roast' : '');
+  current = { text, author: author.textContent };
+}
+function flash(el){
+  el.classList.add('shake');
+  setTimeout(()=>el.classList.remove('shake'),900);
+}
+
+/* ========= Core actions ========= */
+function showRandomRoast(){
+  mode='roast'; updateModeUI();
+  const r = chooseRandom(ROASTS); setDisplay(r,'roast');
+}
+function showRandomQuote(){
+  mode='quote'; updateModeUI();
+  const q = chooseRandom(QUOTES); setDisplay(q,'quote');
+}
+function showDailyRoast(){
+  mode='daily'; updateModeUI();
+  const today = new Date().toISOString().slice(0,10);
+  const idx = hashStr(today) % ROASTS.length;
+  setDisplay(ROASTS[idx],'roast');
+}
+
+/* ========= Bind buttons ========= */
+randomBtn.addEventListener('click', showRandomRoast);
+randomQuoteBtn.addEventListener('click', showRandomQuote);
+surpriseBtn.addEventListener('click', ()=>{
+  const p=Math.random();
+  if(p<0.5) showRandomRoast();
+  else if(p<0.85) showRandomQuote();
+  else showDailyRoast();
+});
+
+copyBtn.addEventListener('click', ()=>{
+  if(!current.text) return flash(copyBtn);
+  navigator.clipboard.writeText(current.text).then(()=>{
+    const prev = copyBtn.textContent;
+    copyBtn.textContent='Kopierat!';
+    setTimeout(()=>copyBtn.textContent=prev,1000);
+  }).catch(()=>flash(copyBtn));
+});
+
+saveFavBtn.addEventListener('click', ()=>{
+  if(!current.text) return flash(saveFavBtn);
+  const arr = loadFavs();
+  arr.unshift({ text: current.text, type: mode==='quote'?'quote':'roast', date: new Date().toISOString() });
+  saveFavs(arr.slice(0,100));
+  renderFavs();
+  const prev = saveFavBtn.textContent;
+  saveFavBtn.textContent='Sparad!';
+  setTimeout(()=>saveFavBtn.textContent=prev,900);
+});
+
+/* quick local add */
+quickAddBtn.addEventListener('click', ()=>{
+  const t = quickText.value.trim();
+  const typ = quickType.value;
+  if(!t){ flash(quickAddBtn); return; }
+  if(typ==='roast') ROASTS.unshift(t);
+  else QUOTES.unshift(t);
+  quickText.value='';
+  const prev = quickAddBtn.textContent;
+  quickAddBtn.textContent='Lagt till!';
+  renderFavs();
+  setTimeout(()=>quickAddBtn.textContent=prev,700);
+});
+
+/* mode controls */
+modeRoastBtn.addEventListener('click', ()=>{ mode='roast'; updateModeUI(); showRandomRoast(); });
+modeQuoteBtn.addEventListener('click', ()=>{ mode='quote'; updateModeUI(); showRandomQuote(); });
+modeDailyBtn.addEventListener('click', ()=>{ mode='daily'; updateModeUI(); showDailyRoast(); });
+
+function updateModeUI(){
+  modeRoastBtn.classList.toggle('active', mode==='roast');
+  modeQuoteBtn.classList.toggle('active', mode==='quote');
+  modeDailyBtn.classList.toggle('active', mode==='daily');
+  modeBadge.textContent = 'Mode: ' + (mode==='roast'?'Roast' : (mode==='quote'?'Citat' : 'Dagens Roast'));
+}
+
+/* keyboard shortcuts */
+document.addEventListener('keydown', (e)=>{
+  if(e.code === 'Space'){ e.preventDefault(); surpriseBtn.click(); }
+  if(e.key === 'r') randomBtn.click();
+  if(e.key === 'q') randomQuoteBtn.click();
+});
+
+/* init */
+renderFavs();
+updateModeUI();
+setTimeout(()=>{ setDisplay("Klar! Tryck 'Ge mig smisk' eller tryck 'Space' för överraskning.", 'quote'); }, 400);
+
+</script>
 </body>
 </html>
