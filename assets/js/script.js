@@ -107,7 +107,7 @@ const QUOTES = [
 
 async function loadData() {
   try {
-    const res = await fetch('/data.json');
+    const res = await fetch('/data/data.json');
     const data = await res.json();
     ROASTS = data.roasts;
     QUOTES = data.quotes;
