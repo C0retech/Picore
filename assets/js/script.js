@@ -27,7 +27,7 @@ let current = { text:'', author:'' };
 /* ========= Data loader ========= */
 async function loadData() {
   try {
-    const res = await fetch('/data/data.json');
+    const res = await fetch('./data/data.json');
     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
     const data = await res.json();
