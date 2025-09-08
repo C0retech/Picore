@@ -5,7 +5,7 @@ export default async function handler(req, res) {
 
   const { text, type } = req.body;
   const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const REPO = 'ditt-användarnamn/ditt-repo';
+  const REPO = 'C0retech/Picore';
   const FILE_PATH = 'data/data.json';
   const BRANCH = 'main';
 
