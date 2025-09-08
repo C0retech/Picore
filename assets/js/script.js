@@ -1,7 +1,6 @@
 let ROASTS;
 let QUOTES;
 
-
 /* ========= Data loader ========= */
 async function loadData() {
   try {
