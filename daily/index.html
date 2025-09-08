@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dagens Roast & Citat – picore.se</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/">Hem</a>
+    <a href="/daily/">Daily</a>
+    <a href="/quotes/">Quotes</a>
+    <a href="/roasts/">Roasts</a>
+    <a href="/privacy/">Integritetspolicy</a>
+  </nav>
 
+  <div class="card">
+    <header>
+      <div class="logo">
+        <div class="dot">R</div>
+        <div>
+          <h1>Dagens Roast & Citat</h1>
+          <p>Varje dag nytt skratt och visdom 😈✨</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="main">
+      <div class="stage">
+        <div class="badge">Mode: Daily</div>
+
+        <div id="dailyRoast" class="quote pop">Klicka "Visa dagens innehåll" för dagens roast.</div>
+        <div id="roastAuthor" class="author"></div>
+
+        <div id="dailyQuote" class="quote pop">Klicka "Visa dagens innehåll" för dagens citat.</div>
+        <div id="quoteAuthor" class="author"></div>
+
+        <div class="actions">
+          <button class="btn primary" id="dailyBtn">Visa dagens innehåll</button>
+          <button class="btn ghost" id="copyRoastBtn">Kopiera roast</button>
+          <button class="btn ghost" id="copyQuoteBtn">Kopiera citat</button>
+          <button class="btn ghost" id="saveFavBtn">Spara favorit</button>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="panel">
+          <h3>Favoriter</h3>
+          <div id="favorites" class="favorites">
+            <div class="hint">Inga favoriter än — spara en roast eller ett citat!</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-center">© 2025 picore.se all rights reserved</div>
+      <div class="footer-right">
+        <a class="link" href="/privacy/">Integritetspolicy</a>
+        <a class="btn alt" href="https://www.buymeacoffee.com/picore.se" target="_blank">Buy Me a Coffee</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- JS -->
+  <script src="/assets/js/script.js"></script>
+  <script src="/assets/js/daily.js"></script>
+</body>
+</html>
