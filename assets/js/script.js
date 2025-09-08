@@ -1,61 +1,6 @@
+let ROASTS = [];
+let QUOTES = [];
 
-
-
-// Kör direkt vid start
-loadData();
-
-
-/* ========= Utils ========= */
-const display = document.getElementById('display');
-const author = document.getElementById('author');
-const randomBtn = document.getElementById('randomBtn');
-const randomQuoteBtn = document.getElementById('randomQuoteBtn');
-const surpriseBtn = document.getElementById('surpriseBtn');
-
-let ROASTS = [], QUOTES = [];
-
-async function loadData() {
-  try {
-    const res = await fetch('/data/data.json');
-    const data = await res.json();
-    ROASTS = data.ROASTS;
-    QUOTES = data.QUOTES;
-    showRandomRoast();
-  } catch(e) {
-    display.textContent = "Kunde inte ladda roasts.";
-    author.textContent = "";
-    console.error(e);
-  }
-}
-
-function chooseRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-function setDisplay(text, type){
-  display.textContent = text;
-  author.textContent = (type==='quote') ? '— Visdom' : '';
-}
-
-function showRandomRoast(){
-  if(!ROASTS.length) return;
-  const r = chooseRandom(ROASTS);
-  setDisplay(r,'roast');
-}
-
-function showRandomQuote(){
-  if(!QUOTES.length) return;
-  const q = chooseRandom(QUOTES);
-  setDisplay(q,'quote');
-}
-
-randomBtn.addEventListener('click', showRandomRoast);
-randomQuoteBtn.addEventListener('click', showRandomQuote);
-surpriseBtn.addEventListener('click', ()=>{
-  const p = Math.random();
-  if(p<0.5) showRandomRoast();
-  else showRandomQuote();
-});
-
-window.addEventListener('load', loadData);
 /* ========= DOM refs ========= */
 const display = document.getElementById('display');
 const author = document.getElementById('author');
@@ -78,6 +23,28 @@ const quickAddBtn = document.getElementById('quickAddBtn');
 
 let mode = 'roast';
 let current = { text:'', author:'' };
+
+/* ========= Data loader ========= */
+async function loadData() {
+  try {
+    const res = await fetch('/data/data.json');
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+    const data = await res.json();
+    ROASTS = data.roasts || [];
+    QUOTES = data.quotes || [];
+
+    // Kör en första visning om display finns
+    if (mode === 'roast') showRandomRoast();
+    else if (mode === 'quote') showRandomQuote();
+    else if (mode === 'daily') showDailyRoast();
+
+  } catch (e) {
+    console.error('Could not load data.json', e);
+    setDisplay('Kunde inte ladda roast/citat 😢', 'quote');
+  }
+}
+
 
 /* ========= Favorites (localStorage) ========= */
 function loadFavs(){ try{ return JSON.parse(localStorage.getItem('fav_roasts')) || []; }catch(e){ return []; } }
@@ -219,4 +186,4 @@ document.addEventListener('keydown', (e)=>{
 /* init */
 renderFavs();
 updateModeUI();
-setTimeout(()=>{ setDisplay("Tryck 'Ge mig smisk' eller tryck 'Space' för överraskning.", 'quote'); }, 400);
+loadData();
