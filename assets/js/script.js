@@ -142,18 +142,25 @@ saveFavBtn.addEventListener('click', ()=>{
   setTimeout(()=>saveFavBtn.textContent=prev,900);
 });
 
-/* quick local add */
-quickAddBtn.addEventListener('click', ()=>{
+/* quick add */
+quickAddBtn.addEventListener('click', async () => {
   const t = quickText.value.trim();
   const typ = quickType.value;
   if(!t){ flash(quickAddBtn); return; }
-  if(typ==='roast') ROASTS.unshift(t);
-  else QUOTES.unshift(t);
-  quickText.value='';
-  const prev = quickAddBtn.textContent;
-  quickAddBtn.textContent='Lagt till!';
-  renderFavs();
-  setTimeout(()=>quickAddBtn.textContent=prev,700);
+
+  // Skicka till serverless function
+  const res = await fetch('/api/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: t, type: typ })
+  });
+
+  if(res.ok){
+    flash(quickAddBtn);
+    quickText.value = '';
+  } else {
+    alert('Något gick fel. Försök igen.');
+  }
 });
 
 /* mode controls */
