@@ -1,5 +1,5 @@
-let ROASTS = [];
-let QUOTES = [];
+let ROASTS;
+let QUOTES;
 
 /* ========= DOM refs ========= */
 const display = document.getElementById('display');
