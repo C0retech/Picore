@@ -1,6 +1,27 @@
 let ROASTS;
 let QUOTES;
 
+
+/* ========= Data loader ========= */
+async function loadData() {
+  try {
+    const res = await fetch('./data/data.json');
+    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+    const data = await res.json();
+    ROASTS = data.roasts || [];
+    QUOTES = data.quotes || [];
+
+    // Kör en första visning om display finns
+    if (mode === 'roast') showRandomRoast();
+    else if (mode === 'quote') showRandomQuote();
+    else if (mode === 'daily') showDailyRoast();
+
+  } catch (e) {
+    console.error('Could not load data.json', e);
+    setDisplay('Kunde inte ladda roast/citat 😢', 'quote');
+  }
+}
 /* ========= DOM refs ========= */
 const display = document.getElementById('display');
 const author = document.getElementById('author');
@@ -23,27 +44,6 @@ const quickAddBtn = document.getElementById('quickAddBtn');
 
 let mode = 'roast';
 let current = { text:'', author:'' };
-
-/* ========= Data loader ========= */
-async function loadData() {
-  try {
-    const res = await fetch('./data/data.json');
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-    const data = await res.json();
-    ROASTS = data.roasts || [];
-    QUOTES = data.quotes || [];
-
-    // Kör en första visning om display finns
-    if (mode === 'roast') showRandomRoast();
-    else if (mode === 'quote') showRandomQuote();
-    else if (mode === 'daily') showDailyRoast();
-
-  } catch (e) {
-    console.error('Could not load data.json', e);
-    setDisplay('Kunde inte ladda roast/citat 😢', 'quote');
-  }
-}
 
 
 /* ========= Favorites (localStorage) ========= */
