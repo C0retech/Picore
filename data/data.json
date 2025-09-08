@@ -1,5 +1,5 @@
-/* ========= DATA ========= */
-const ROASTS = [
+{
+  "roasts": [
   "Du är som en molnserver – dyr, långsam och oftast offline.",
   "Du har så lite edge att till och med Internet Explorer var snabbare än dig.",
   "Din personlighet laddar lika långsamt som ett 90-talsmodem.",
@@ -50,9 +50,9 @@ const ROASTS = [
   "Du är den mänskliga motsvarigheten till att snubbla på en sladd och dra ur hela datorn.",
   "Folk pratar bakom din rygg för att din personlighet inte är värd ögonkontakt.",
   "Du är beviset på att inte alla spermier ska vinna."
-];
+],
 
-const QUOTES = [
+"quotes": [
   "Kaffe är inte en dryck, det är en livsstil.",
   "Ctrl+S är min religion.",
   "Livet är som en kodbas – fullt av buggar men ändå körbart.",
@@ -103,4 +103,5 @@ const QUOTES = [
   "Lycka är bara när du för en gångs skull slipper träffa folk.",
   "Ju mer någon pratar om sitt öppna sinne, desto smalare är deras hjärna.",
   "Alla vill ha balans i livet, men ingen kan ens balansera sin jävla budget."
-];
+  ]
+}
