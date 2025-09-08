@@ -178,4 +178,4 @@ document.addEventListener('keydown', (e)=>{
 /* init */
 renderFavs();
 updateModeUI();
-setTimeout(()=>{ setDisplay("Klar! Tryck 'Ge mig smisk' eller tryck 'Space' för överraskning.", 'quote'); }, 400);
+setTimeout(()=>{ setDisplay("Tryck 'Ge mig smisk' eller tryck 'Space' för överraskning.", 'quote'); }, 400);
