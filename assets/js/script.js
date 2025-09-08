@@ -104,6 +104,8 @@ const QUOTES = [
   "Ju mer någon pratar om sitt öppna sinne, desto smalare är deras hjärna."
   "Alla vill ha balans i livet, men ingen kan ens balansera sin jävla budget."
 ];
+let ROASTS = [];
+let QUOTES = [];
 
 async function loadData() {
   try {
