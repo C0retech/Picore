@@ -16,8 +16,9 @@ async function loadData() {
     else if (mode === 'quote') showRandomQuote();
     else if (mode === 'daily') showDailyRoast();
 
-  } catch (e) {
-    console.error('Could not load data.json', e);
+  } 
+  
+  catch (_e) {
     setDisplay('Kunde inte ladda roast/citat 😢', 'quote');
   }
 }
@@ -86,6 +87,20 @@ function flash(el){
 }
 
 /* ========= Core actions ========= */
+
+function chooseRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function hashStr(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
+}
+
 function showRandomRoast(){
   mode='roast'; updateModeUI();
   const r = chooseRandom(ROASTS); setDisplay(r,'roast');
