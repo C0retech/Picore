@@ -157,7 +157,7 @@ quickAddBtn.addEventListener('click', async ()=>{
     const data = await res.json();
     if(data.success){
       flash(quickAddBtn);
-      window[typ==='roast'?'ROASTS':'QUOTES'].unshift(t); // direkt i front-end
+      window[typ==='roast'?'ROASTS':'QUOTES'].unshift(t);
       renderFavs();
       quickText.value='';
     } else {
@@ -171,6 +171,7 @@ quickAddBtn.addEventListener('click', async ()=>{
     setTimeout(()=>quickAddBtn.textContent='Lägg till (lokalt)',1000);
   }
 });
+
 
 
 /* mode controls */
