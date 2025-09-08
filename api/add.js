@@ -1,36 +1,47 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  if(req.method !== 'POST') return res.status(405).end();
-
+  if(req.method !== 'POST') return res.status(405).json({error:'Only POST allowed'});
+  
   const { text, type } = req.body;
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const REPO = 'C0retech/Picore';
-  const FILE_PATH = 'data/data.json';
-  const BRANCH = 'main';
+  if(!text || !type) return res.status(400).json({error:'Missing text or type'});
+  
+  const repo = process.env.GITHUB_REPO;
+  const branch = process.env.GITHUB_BRANCH || 'main';
+  const filePath = process.env.DATA_FILE || 'data.json';
+  const token = process.env.GITHUB_TOKEN;
 
-  // Hämta nuvarande data.json från GitHub
-  const fileRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}?ref=${BRANCH}`, {
-    headers: { Authorization: `token ${GITHUB_TOKEN}` }
+  // 1️⃣ Hämta befintlig data.json
+  const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${branch}`, {
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
   });
-  const fileData = await fileRes.json();
+  
+  if(!getRes.ok) return res.status(getRes.status).json({error:'Could not fetch data.json'});
+
+  const fileData = await getRes.json();
+  const sha = fileData.sha;
   const content = JSON.parse(Buffer.from(fileData.content, 'base64').toString());
 
-  if(type === 'roast') content.roasts.unshift(text);
+  // 2️⃣ Lägg till nytt bidrag
+  if(type==='roast') content.roasts.unshift(text);
   else content.quotes.unshift(text);
 
-  // Commit tillbaka till GitHub
-  const updatedContent = Buffer.from(JSON.stringify(content, null, 2)).toString('base64');
-  await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`, {
+  // 3️⃣ Uppdatera filen på GitHub
+  const updateRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
     method: 'PUT',
-    headers: { Authorization: `token ${GITHUB_TOKEN}` },
+    headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' },
     body: JSON.stringify({
       message: `Add new ${type}`,
-      content: updatedContent,
-      sha: fileData.sha,
-      branch: BRANCH
+      content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
+      sha,
+      branch
     })
   });
 
-  res.status(200).json({ success: true });
+  if(!updateRes.ok){
+    const err = await updateRes.json();
+    return res.status(updateRes.status).json({error: err.message});
+  }
+
+  res.status(200).json({success:true, added:text, type});
 }
