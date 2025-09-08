@@ -143,25 +143,35 @@ saveFavBtn.addEventListener('click', ()=>{
 });
 
 /* quick add */
-quickAddBtn.addEventListener('click', async () => {
+quickAddBtn.addEventListener('click', async ()=>{
   const t = quickText.value.trim();
   const typ = quickType.value;
   if(!t){ flash(quickAddBtn); return; }
 
-  // Skicka till serverless function
-  const res = await fetch('/api/add', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: t, type: typ })
-  });
-
-  if(res.ok){
-    flash(quickAddBtn);
-    quickText.value = '';
-  } else {
-    alert('Något gick fel. Försök igen.');
+  try{
+    const res = await fetch('/api/add', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ text: t, type: typ })
+    });
+    const data = await res.json();
+    if(data.success){
+      flash(quickAddBtn);
+      window[typ==='roast'?'ROASTS':'QUOTES'].unshift(t); // direkt i front-end
+      renderFavs();
+      quickText.value='';
+    } else {
+      console.error(data.error);
+      quickAddBtn.textContent='Fel, försök igen';
+      setTimeout(()=>quickAddBtn.textContent='Lägg till (lokalt)',1000);
+    }
+  }catch(e){
+    console.error(e);
+    quickAddBtn.textContent='Fel, försök igen';
+    setTimeout(()=>quickAddBtn.textContent='Lägg till (lokalt)',1000);
   }
 });
+
 
 /* mode controls */
 modeRoastBtn.addEventListener('click', ()=>{ mode='roast'; updateModeUI(); showRandomRoast(); });
