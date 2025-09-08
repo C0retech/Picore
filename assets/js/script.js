@@ -25,6 +25,21 @@ const QUOTES = [
   "Rädsla är bara en 404: du hittar snart rätt sida igen."
 ];
 
+async function loadData() {
+  try {
+    const res = await fetch('/data/data.json');
+    const data = await res.json();
+    ROASTS = data.roasts;
+    QUOTES = data.quotes;
+  } catch(e){
+    console.error('Could not load data.json', e);
+  }
+}
+
+// Kör direkt vid start
+loadData();
+
+
 /* ========= Utils ========= */
 function chooseRandom(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 function hashStr(s){
