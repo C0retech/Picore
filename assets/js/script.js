@@ -1,43 +1,60 @@
+/* ========= DOM refs ========= */
+const display = document.getElementById('display');
+const author = document.getElementById('author');
+const resultCard = document.getElementById('resultCard');
+
+const roastBtn = document.getElementById('btnRoast');
+const quoteBtn = document.getElementById('btnQuote');
+
+/* ========= Data ========= */
 let ROASTS = [];
 let QUOTES = [];
 
-// Ladda in från data.json
-async function loadData() {
-  try {
-    const res = await fetch('/data/data.json');
-    if (!res.ok) throw new Error("Kunde inte hämta data.json");
-    const data = await res.json();
-    ROASTS = data.roasts || [];
-    QUOTES = data.quotes || [];
-  } catch {
-    console.error("Misslyckades med att ladda data.json");
-  }
-}
-
+/* ========= Helpers ========= */
 function chooseRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function setDisplay(text, kind) {
+  display.textContent = text;
+  author.textContent = kind === "roast" ? "— Roastmaster" : "— Visdom";
+
+  // gör kortet synligt och trigga animation
+  resultCard.classList.remove("show");
+  void resultCard.offsetWidth; // trick för att reseta animation
+  resultCard.classList.add("show");
+}
+
+/* ========= Actions ========= */
 function showRandomRoast() {
-  const roast = chooseRandom(ROASTS);
-  document.getElementById("display").textContent = roast || "Inga roasts tillgängliga.";
-  document.getElementById("author").textContent = "";
+  if (!ROASTS.length) return;
+  const text = chooseRandom(ROASTS);
+  setDisplay(text, "roast");
 }
 
 function showRandomQuote() {
-  const quote = chooseRandom(QUOTES);
-  if (quote) {
-    document.getElementById("display").textContent = quote.text;
-    document.getElementById("author").textContent = `– ${quote.author || "Okänd"}`;
-  } else {
-    document.getElementById("display").textContent = "Inga citat tillgängliga.";
-    document.getElementById("author").textContent = "";
+  if (!QUOTES.length) return;
+  const text = chooseRandom(QUOTES);
+  setDisplay(text, "quote");
+}
+
+/* ========= Data loader ========= */
+async function loadData() {
+  try {
+    const res = await fetch("/data/data.json");
+    if (!res.ok) throw new Error("Kunde inte hämta data.json");
+    const data = await res.json();
+    ROASTS = data.roasts || [];
+    QUOTES = data.quotes || [];
+    console.log("✅ Data laddad:", ROASTS.length, "roasts &", QUOTES.length, "citat");
+  } catch (err) {
+    console.error("Fel vid laddning:", err);
+    setDisplay("Kunde inte ladda roast/citat 😢", "quote");
   }
 }
 
-// Event listeners
-document.addEventListener("DOMContentLoaded", async () => {
-  await loadData();
-  document.getElementById("btnRoast").addEventListener("click", showRandomRoast);
-  document.getElementById("btnQuote").addEventListener("click", showRandomQuote);
-});
+/* ========= Init ========= */
+roastBtn.addEventListener("click", showRandomRoast);
+quoteBtn.addEventListener("click", showRandomQuote);
+
+loadData();
