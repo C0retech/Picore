@@ -1,106 +1,90 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Roast & Citat Hub 😈✨</title>
-<!-- CSS -->
-<link rel="stylesheet" href="/assets/css/style.css">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Picore.se - Dagens Roast & Citat</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="navbar-inner">
-    <div class="logo">
-      <div class="dot">R</div>
-      <div>
-        <h1>Roast & Citat Hub</h1>
-        <p>Slumpmässiga roasts & visdom — ingen nåd, bara skratt.</p>
-      </div>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="/index.html" class="logo">picore.se</a>
     </div>
-    <div class="nav-links">
-      <a href="/">Hem</a>
-      <a href="/roasts/">Roasts</a>
-      <a href="/quotes/">Citat</a>
-      <a href="/daily/">Dagens Roast</a>
-      <a href="/privacy/">Integritetspolicy</a>
+    <div class="nav-right">
+      <a href="/daily/index.html">Dagens Roast</a>
+      <a href="/roasts/index.html">Roasts</a>
+      <a href="/quotes/index.html">Citat</a>
+      <a href="/privacy/index.html">Integritetspolicy</a>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- CARD -->
-<div class="card" role="application" aria-label="Roast och Citat hub">
-  <header>
-    <div class="top-right">
-      <div style="font-size:13px;color:var(--muted)">Prova: <strong style="color:var(--accent)">Ge mig smisk</strong></div>
-    </div>
-  </header>
-
-  <div class="main">
-    <div class="stage">
-      <div class="badge" id="modeBadge">Mode: Roast</div>
-
-      <div class="type-switch" role="tablist" aria-label="Välj typ">
-        <button id="modeRoast" class="active" aria-pressed="true">Roast</button>
-        <button id="modeQuote">Citat</button>
-        <button id="modeDaily">Dagens Roast</button>
-      </div>
-
-      <div id="display" class="quote pop">Klicka på <strong>"Ge mig smisk"</strong> för att börja.</div>
+  <!-- Main content -->
+  <main class="container">
+    <section class="display-section">
+      <h1>Dagens Roast</h1>
+      <div id="display" class="quote pop"></div>
       <div id="author" class="author"></div>
+    </section>
 
-      <div class="actions" role="toolbar" aria-label="Handlingar">
-        <button class="btn primary" id="randomBtn">Ge mig smisk!</button>
-        <button class="btn alt" id="randomQuoteBtn">Visa visdom</button>
-        <button class="btn ghost" id="copyBtn">Kopiera</button>
-        <button class="btn ghost" id="saveFavBtn">Spara favorit</button>
-        <button class="btn surprise" id="surpriseBtn">Överraska mig</button>
-      </div>
+    <section class="display-section">
+      <h1>Dagens Citat</h1>
+      <div id="displayQuote" class="quote pop"></div>
+      <div id="authorQuote" class="author"></div>
+    </section>
+
+    <section class="buttons">
+      <button id="randomBtn" class="btn">Ge mig smisk</button>
+      <button id="randomQuoteBtn" class="btn">Visa citat</button>
+      <button id="surpriseBtn" class="btn">Överraskning</button>
+    </section>
+
+    <section class="favorites-section">
+      <h2>Favoriter</h2>
+      <div id="favorites"></div>
+    </section>
+
+    <section class="quick-add">
+      <input type="text" id="quickText" placeholder="Skriv in roast eller citat">
+      <select id="quickType">
+        <option value="roast">Roast</option>
+        <option value="quote">Citat</option>
+      </select>
+      <button id="quickAddBtn" class="btn">Lägg till (lokalt)</button>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-left"></div>
+    <div class="footer-center">© 2025 picore.se all rights reserved</div>
+    <div class="footer-right">
+      <a class="link" href="/privacy/index.html">Integritetspolicy</a>
+      <a href="https://www.buymeacoffee.com/picore.se" target="_blank" class="bmc-btn">Buy Me a Coffee</a>
     </div>
+  </footer>
 
-    <aside class="side" aria-label="Sidopanel">
-      <div class="panel">
-        <h3>Favoriter</h3>
-        <div id="favorites" class="favorites">
-          <div class="hint">Inga favoriter än — spara en roast eller citat!</div>
-        </div>
-        <div style="margin-top:8px" class="hint">Favoriter sparas lokalt i din webbläsare.</div>
-      </div>
+  <!-- Script -->
+  <script type="module">
+    import { loadData, showRandomRoast, showRandomQuote, showDailyRoast } from '/assets/js/script.js';
 
-      <div class="panel">
-        <h3>Skicka in (via GitHub)</h3>
-        <p class="hint">Vill du skicka egna roasts eller citat? Skapa en GitHub Issue i repo:t och märk den <code>roast</code> eller <code>quote</code>. Jag godkänner manuellt.</p>
-        <p class="hint">Alternativt: kopiera din text och skicka den direkt till mig.</p>
-      </div>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadData();
 
-      <div class="panel submit-form">
-        <h3>Work in progress</h3>
-        <h3>Snabbskicka (local only)</h3>
-        <input id="quickText" placeholder="Skriv roast eller citat här..." aria-label="Snabbtext">
-        <select id="quickType" aria-label="Typ">
-          <option value="roast">Roast</option>
-          <option value="quote">Citat</option>
-        </select>
-        <button class="btn primary" id="quickAddBtn" style="width:100%;margin-top:8px">Lägg till (lokalt)</button>
-        <div class="hint" style="margin-top:6px">Lokal tillägg — syns bara i din browser. För publik: använd GitHub Issues.</div>
-      </div>
-    </aside>
-  </div>
+      // Visa dagens roast
+      showDailyRoast();
 
-  <!-- FOOTER -->
-<footer>
-  <div class="footer-left"></div>
-  <div class="footer-center">© 2025 picore.se – all rights reserved</div>
-  <div class="footer-right">
-    <a class="btn" href="https://www.buymeacoffee.com/picore.se" target="_blank">Buy Me a Coffee</a>
-  </div>
-</footer>
-  
-<!-- JS -->
-<script src="/assets/js/script.js"></script>
-<script src="/assets/js/main.js"></script>
-  
+      // Visa ett "dagens citat" separat
+      if (window.QUOTES && window.QUOTES.length) {
+        const today = new Date().toISOString().slice(0,10);
+        const idx = hashStr(today) % QUOTES.length;
+        const displayQuote = document.getElementById('displayQuote');
+        const authorQuote = document.getElementById('authorQuote');
+        displayQuote.textContent = QUOTES[idx];
+        authorQuote.textContent = '— Visdom';
+      }
+    });
+  </script>
 </body>
 </html>
