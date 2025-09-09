@@ -97,31 +97,37 @@ button:hover {
   button {
     flex: 1 1 100%; /* knapparna staplas på små skärmar */
   }
-  .content-wrapper{
+.main-layout{
   display:flex;
-  gap:20px;
   justify-content:center;
   align-items:flex-start;
-  flex-wrap:wrap;
+  gap:30px;
   width:100%;
   max-width:1200px;
   margin:0 auto;
-  padding:20px;
+  padding:40px 20px;
+  flex-wrap:wrap;
 }
 
-.left-side, .right-side{
-  flex:1 1 300px;
+.center-card{
+  flex:1 1 600px;
+  display:flex;
+  justify-content:center;
+}
+
+.right-card{
+  flex:0 0 300px;
   min-width:280px;
 }
 
-#dailyCard{
+.right-card .card{
   background: rgba(30,30,50,0.8);
   padding:20px;
   border-radius:12px;
   box-shadow:0 5px 20px rgba(0,0,0,0.2);
 }
 
-#dailyCard h3{
+.right-card h3{
   margin-top:0;
   margin-bottom:10px;
   font-size:1.2rem;
