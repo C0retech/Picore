@@ -1,20 +1,97 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<<<<<<< HEAD
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Roasts & Citat</title>
   <link rel="stylesheet" href="/assets/css/style.css">
-=======
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Picore.se - Dagens Roast & Citat</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
->>>>>>> ce64a2fa1a66249c5923748fef8e688fac883353
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      margin: 0;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+
+    nav.navbar {
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+    nav.navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    nav.navbar a:hover {
+      color: #ffd700;
+    }
+
+    main {
+      max-width: 700px;
+      margin-top: 50px;
+      text-align: center;
+    }
+
+    .btn-group {
+      margin: 20px 0;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    button {
+      background: #333;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: #444;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 30px;
+      margin-top: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card p {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .card small {
+      display: block;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 <body>
-<<<<<<< HEAD
   <nav class="navbar">
     <a href="/">Hem</a>
     <a href="/roasts/">Roasts</a>
@@ -24,109 +101,20 @@
   </nav>
 
   <main>
-    <h1>Roasts & Citat</h1>
-    <p>Klicka på en knapp för att få lite sanning kastad i ansiktet 😏</p>
-=======
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <a href="/index.html" class="logo">picore.se</a>
-    </div>
-    <div class="nav-right">
-      <a href="/daily/index.html">Dagens Roast</a>
-      <a href="/roasts/index.html">Roasts</a>
-      <a href="/quotes/index.html">Citat</a>
-      <a href="/privacy/index.html">Integritetspolicy</a>
-    </div>
-  </nav>
->>>>>>> ce64a2fa1a66249c5923748fef8e688fac883353
+    <h1>🔥 Roasts & 💡 Citat</h1>
+    <p>Tryck på en knapp nedan och se vad ödet bjuder på 😉</p>
 
-<<<<<<< HEAD
     <div class="btn-group">
-      <button id="btnRoast">Ge mig en roast 🔥</button>
-      <button id="btnQuote">Ge mig ett citat 💡</button>
+      <button id="btnRoast">Slumpa Roast 🔥</button>
+      <button id="btnQuote">Slumpa Citat 💡</button>
     </div>
-=======
-  <!-- Main content -->
-  <main class="container">
-    <section class="display-section">
-      <h1>Dagens Roast</h1>
-      <div id="display" class="quote pop"></div>
-      <div id="author" class="author"></div>
-    </section>
->>>>>>> ce64a2fa1a66249c5923748fef8e688fac883353
 
-<<<<<<< HEAD
-    <div class="result-box">
-      <p id="display">Tryck på en knapp ovanför för att börja!</p>
-      <p id="author"></p>
-=======
-    <section class="display-section">
-      <h1>Dagens Citat</h1>
-      <div id="displayQuote" class="quote pop"></div>
-      <div id="authorQuote" class="author"></div>
-    </section>
-
-    <section class="buttons">
-      <button id="randomBtn" class="btn">Ge mig smisk</button>
-      <button id="randomQuoteBtn" class="btn">Visa citat</button>
-      <button id="surpriseBtn" class="btn">Överraskning</button>
-    </section>
-
-    <section class="favorites-section">
-      <h2>Favoriter</h2>
-      <div id="favorites"></div>
-    </section>
-
-    <section class="quick-add">
-      <input type="text" id="quickText" placeholder="Skriv in roast eller citat">
-      <select id="quickType">
-        <option value="roast">Roast</option>
-        <option value="quote">Citat</option>
-      </select>
-      <button id="quickAddBtn" class="btn">Lägg till (lokalt)</button>
-    </section>
+    <div id="resultCard" class="card">
+      <p id="display">👉 Vänta inte, tryck på knapparna!</p>
+      <small id="author"></small>
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <div class="footer-left"></div>
-    <div class="footer-center">© 2025 picore.se all rights reserved</div>
-    <div class="footer-right">
-      <a class="link" href="/privacy/index.html">Integritetspolicy</a>
-      <a href="https://www.buymeacoffee.com/picore.se" target="_blank" class="bmc-btn">Buy Me a Coffee</a>
->>>>>>> ce64a2fa1a66249c5923748fef8e688fac883353
-    </div>
-<<<<<<< HEAD
-  </main>
-=======
-  </footer>
->>>>>>> ce64a2fa1a66249c5923748fef8e688fac883353
-
-<<<<<<< HEAD
   <script src="/assets/js/script.js"></script>
-=======
-  <!-- Script -->
-  <script type="module">
-    import { loadData, showRandomRoast, showRandomQuote, showDailyRoast } from '/assets/js/script.js';
-
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadData();
-
-      // Visa dagens roast
-      showDailyRoast();
-
-      // Visa ett "dagens citat" separat
-      if (window.QUOTES && window.QUOTES.length) {
-        const today = new Date().toISOString().slice(0,10);
-        const idx = hashStr(today) % QUOTES.length;
-        const displayQuote = document.getElementById('displayQuote');
-        const authorQuote = document.getElementById('authorQuote');
-        displayQuote.textContent = QUOTES[idx];
-        authorQuote.textContent = '— Visdom';
-      }
-    });
-  </script>
->>>>>>> ce64a2fa1a66249c5923748fef8e688fac883353
 </body>
 </html>
