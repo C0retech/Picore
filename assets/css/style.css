@@ -97,4 +97,39 @@ button:hover {
   button {
     flex: 1 1 100%; /* knapparna staplas på små skärmar */
   }
+  .content-wrapper{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  align-items:flex-start;
+  flex-wrap:wrap;
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+  padding:20px;
+}
+
+.left-side, .right-side{
+  flex:1 1 300px;
+  min-width:280px;
+}
+
+#dailyCard{
+  background: rgba(30,30,50,0.8);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+#dailyCard h3{
+  margin-top:0;
+  margin-bottom:10px;
+  font-size:1.2rem;
+}
+
+#dailyDisplay{
+  font-size:1rem;
+  line-height:1.4;
+}
+
 }

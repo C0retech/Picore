@@ -57,4 +57,22 @@ async function loadData() {
 roastBtn.addEventListener("click", showRandomRoast);
 quoteBtn.addEventListener("click", showRandomQuote);
 
-loadData();
+function hashStr(str){
+  let hash = 0;
+  for(let i=0;i<str.length;i++){
+    hash = ((hash<<5)-hash)+str.charCodeAt(i);
+    hash |=0;
+  }
+  return Math.abs(hash);
+}
+
+function showDailyRoast(){
+  const today = new Date().toISOString().slice(0,10);
+  const idx = hashStr(today) % ROASTS.length;
+  const dailyText = ROASTS[idx];
+  const dailyDisplay = document.getElementById('dailyDisplay');
+  dailyDisplay.textContent = dailyText;
+}
+
+// Kör efter att data har laddats
+loadData().then(showDailyRoast);
