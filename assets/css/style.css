@@ -7,6 +7,8 @@ body, html {
   color: #fff;
   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
   background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -15,6 +17,7 @@ body, html {
   gap: 20px;
   padding: 40px;
   align-items: stretch;
+  flex: 1;
 }
 
 .card {
@@ -77,6 +80,7 @@ footer {
   padding: 20px;
   font-size: 0.9rem;
   opacity: 0.8;
+  margin-top: auto;
 }
 
 /* Mobilanpassning */
